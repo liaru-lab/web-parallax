@@ -1,0 +1,29 @@
+{
+  "name": "web-parallax",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 5173 --strictPort",
+    "test": "node --test tests/*.test.js",
+    "check:fullscreen": "node scripts/check-fullscreen.mjs",
+    "postinstall": "node scripts/prepare-assets.mjs",
+    "check:assets": "node scripts/check-public-assets.mjs",
+    "check:release": "node scripts/check-release.mjs",
+    "release": "npm test && npm run build && node scripts/export-release.mjs"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "0.10.21",
+    "three": "0.186.1",
+    "three-stdlib": "^2.36.1"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "artifacts": [
+    {
+      "file": "mediapipe/vision_wasm_internal.js",
+      "license": "Apache-2.0",
+      "source": "npm:@mediapipe/tasks-vision@0.10.21",
+      "sha256": "4a97e2520ba506c680ecd6ba6acfb146888afa0e2746d57f205352bc6ebb82eb"
+    },
+    {
+      "file": "mediapipe/vision_wasm_internal.wasm",
+      "license": "Apache-2.0",
+      "source": "npm:@mediapipe/tasks-vision@0.10.21",
+      "sha256": "f00ec4731faa23b3e714d00e88d4d10e2df5c0a427d3a2b4ae6e3526fdd14ef7"
+    },
+    {
+      "file": "mediapipe/vision_wasm_nosimd_internal.js",
+      "license": "Apache-2.0",
+      "source": "npm:@mediapipe/tasks-vision@0.10.21",
+      "sha256": "927def7b465c51b86e4b3060f93646aca4e27121f4b8fc0483786e407ea9cf1f"
+    },
+    {
+      "file": "mediapipe/vision_wasm_nosimd_internal.wasm",
+      "license": "Apache-2.0",
+      "source": "npm:@mediapipe/tasks-vision@0.10.21",
+      "sha256": "3821ea9b1f7fb8c549ef2a064ef5c85750bf375c545a49fd6eea0df44a95f1f4"
+    },
+    {
+      "file": "mediapipe/face_landmarker.task",
+      "license": "Apache-2.0",
+      "source": "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+      "sha256": "64184e229b263107bc2b804c6625db1341ff2bb731874b0bcc2fe6544e0bc9ff"
+    },
+    {
+      "file": "motions/disk/Breath_1800F.vmd",
+      "license": "CC0-1.0",
+      "author": "DiSK",
+      "source": "https://bowlroll.net/file/231043",
+      "sha256": "d1a1cbb09865c3a408cd2a2fad58ad480da0153b0bec47bf57f38000fb3eedc6"
+    },
+    {
+      "file": "motions/disk/Eyedart_1800F.vmd",
+      "license": "CC0-1.0",
+      "author": "DiSK",
+      "source": "https://bowlroll.net/file/231043",
+      "sha256": "158505f94a7e655ac79adb21a4a573a442a7a1bd8f9a603023f28a573906e078"
+    },
+    {
+      "file": "motions/disk/readme.txt",
+      "license": "CC0-1.0",
+      "author": "DiSK",
+      "source": "https://bowlroll.net/file/231043",
+      "sha256": "29f4ba2507130793c14f7bbce27e53dc96abd7dab37ad56dd77b98eece20508f"
+    }
+  ]
+}

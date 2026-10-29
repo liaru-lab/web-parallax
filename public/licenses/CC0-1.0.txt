@@ -1,0 +1,9 @@
+CC0 1.0 Universal
+
+The DiSK motion files are offered under CC0 1.0 Universal.
+The original bilingual declaration is preserved at motions/disk/readme.txt.
+
+Canonical legal code:
+https://creativecommons.org/publicdomain/zero/1.0/legalcode.en
+
+This notice is a pointer to the legal code, not a replacement for it.

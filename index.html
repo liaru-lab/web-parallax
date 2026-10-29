@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta name="theme-color" content="#eeede7" />
+    <title>視差と揺れ</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>視差と揺れ<span>Webカメラと端末センサーの実験</span></h1>
+      <nav class="header-links"><label for="language">言語</label><select id="language" data-no-i18n aria-label="Language / 言語"><option value="ja">日本語</option><option value="en">English</option></select><a href="./docs/demo.md" target="_blank" rel="noopener">使い方 ↗</a><a href="./credits.html" target="_blank" rel="noopener">クレジット ↗</a></nav>
+    </header>
+    <main>
+      <section class="experiment" aria-label="3D実験">
+        <div id="viewport" tabindex="0" role="region" aria-label="3D表示。マウス・指・矢印キーで視点を移動">
+          <canvas id="scene" aria-label="3Dモデルと立体物"></canvas>
+          <button id="fullscreen" type="button" aria-pressed="false">全画面</button>
+          <div class="scene-label"><span class="dot"></span><span id="input-label">マウス・指で視点を移動</span></div>
+          <div class="scene-caption">画面の枠を窓として、奥を覗く。</div>
+          <div class="axis" aria-hidden="true"><span>↑ Y</span><span>X →</span></div>
+          <div class="camera-preview" id="camera-preview" hidden>
+            <canvas id="tracking-preview" width="240" height="180" aria-label="顔の位置・向き・目と口の動きを示す模式図"></canvas>
+            <span id="face-label">顔を探しています</span>
+          </div>
+        </div>
+        <div class="under-scene">
+          <p id="instruction">表示の上でマウスを動かすか、指でドラッグしてください。</p>
+          <button id="nudge" type="button" disabled>飾りを揺らす <span aria-hidden="true">↝</span></button>
+        </div>
+        <p class="model-credit"><span id="model-status" role="status">モデルを読み込んでいます</span><span id="model-credit">Deskbot · このデモの手続き生成モデル</span></p>
+      </section>
+      <aside aria-label="操作パネル">
+        <section class="control-section model-controls">
+          <h2>モデル</h2>
+          <label class="select-label" for="model-files">モデルと素材を選ぶ</label>
+          <input id="model-files" type="file" multiple />
+          <label class="select-label" for="model-folder">またはモデルのフォルダーを選ぶ</label>
+          <input id="model-folder" type="file" webkitdirectory multiple />
+          <p class="note">GLBは1ファイル。MMD・glTFはモデルとテクスチャ等を一緒に選びます。ZIPは展開してから選んでください。</p>
+          <p class="note">ファイルは端末内で読み込みます。作品の公開には各素材の利用条件が適用されます。</p>
+          <button id="model-demo" type="button">デモモデルに戻す</button>
+        </section>
+        <section class="control-section">
+          <h2>視点</h2>
+          <button id="camera" class="primary" type="button">カメラで追従</button>
+          <p class="status" id="camera-status" role="status">カメラは停止中</p>
+          <p class="note">顔の位置で視点が変わります。映像は端末内で処理し、画面には模式図だけを表示します。</p>
+          <button id="calibrate" type="button">画面と距離を校正</button>
+          <p class="status" id="calibration-summary" role="status">未校正：距離は固定です</p>
+          <div class="button-row">
+            <button id="center" type="button">中央に合わせる</button>
+            <button id="parallax" type="button" aria-pressed="true">視差 ON</button>
+          </div>
+          <label class="range-label" for="strength">視差の強さ <output id="strength-value">1.0</output></label>
+          <input id="strength" type="range" min="0.2" max="2" step="0.1" value="1" />
+        </section>
+        <section class="control-section">
+          <h2>揺れもの</h2>
+          <button id="sensors" type="button">端末センサーを使う</button>
+          <p class="status" id="sensor-status" role="status">スマホの傾き・動きで飾りが揺れます</p>
+          <p class="note">髪やリボン、衣装の紐が重力と慣性に反応します。PCでは「飾りを揺らす」で試せます。</p>
+          <label class="range-label" for="sway">揺れの強さ <output id="sway-value">1.0</output></label>
+          <input id="sway" type="range" min="0" max="2" step="0.1" value="1" />
+        </section>
+        <section class="control-section animation-controls">
+          <h2>モデルの立ち位置</h2>
+          <label class="range-label" for="model-x">左右 <output id="model-x-value">中央</output></label>
+          <input id="model-x" type="range" min="-2" max="2" step="0.05" value="0" />
+          <label class="range-label" for="model-depth">前後 <output id="model-depth-value">手前</output></label>
+          <input id="model-depth" type="range" min="-5" max="2.5" step="0.05" value="-0.8" />
+          <div class="range-ends" aria-hidden="true"><span>奥</span><span>手前</span></div>
+          <label class="range-label" for="model-scale">大きさ <output id="model-scale-value">1.0</output></label>
+          <input id="model-scale" type="range" min="0.25" max="2" step="0.05" value="1" />
+          <label class="range-label" for="model-yaw">向き <output id="model-yaw-value">0°</output></label>
+          <input id="model-yaw" type="range" min="-180" max="180" step="5" value="0" />
+          <button id="model-reset" type="button">立ち位置を戻す</button>
+        </section>
+        <section class="control-section animation-controls">
+          <h2>背景・照明</h2>
+          <label class="select-label" for="background-file">背景画像を選ぶ</label>
+          <input id="background-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" />
+          <p id="background-status" class="status" role="status">スタジオ背景</p>
+          <button id="background-reset" type="button">背景を戻す</button>
+          <label class="range-label" for="light-key">主光源 <output id="light-key-value">1.4</output></label>
+          <input id="light-key" type="range" min="0" max="3" step="0.1" value="1.4" />
+          <label class="range-label" for="light-ambient">環境光 <output id="light-ambient-value">1.2</output></label>
+          <input id="light-ambient" type="range" min="0" max="3" step="0.1" value="1.2" />
+          <label class="range-label" for="light-direction">光の方向 <output id="light-direction-value">-30°</output></label>
+          <input id="light-direction" type="range" min="-180" max="180" step="5" value="-30" />
+          <label class="check"><input id="self-shadow" type="checkbox" /> モデル自身にも影を落とす</label>
+        </section>
+        <section class="control-section animation-controls">
+          <h2>表情・動き</h2>
+          <label class="select-label" for="expression">表情</label>
+          <select id="expression" disabled><option value="auto">自動・モーションに合わせる</option><option value="neutral">通常（固定）</option></select>
+          <label class="check"><input id="idle" type="checkbox" checked /> まばたき・小さな待機動作</label>
+          <label class="select-label" for="animation-clip">モデル内のアニメーション</label>
+          <select id="animation-clip" disabled><option value="-1">なし</option></select>
+          <label class="select-label" for="motion-file">VMDモーションを読み込む</label>
+          <input id="motion-file" type="file" accept=".vmd" disabled />
+          <p class="status" id="motion-status" role="status">モデル内の表情と簡単な待機動作</p>
+          <div class="button-row"><button id="motion-pause" type="button" disabled>一時停止</button><button id="motion-clear" type="button" disabled>モーションを解除</button></div>
+          <button id="motion-default" type="button" disabled>サンプルの呼吸・視線</button>
+          <p class="note">待機モーション：<a href="https://bowlroll.net/file/231043" target="_blank" rel="noopener">DiSK / CC0 1.0 ↗</a></p>
+          <p class="note"><a href="./docs/models.md" target="_blank" rel="noopener">配布モーションの候補と使い方 ↗</a></p>
+        </section>
+        <details>
+          <summary>表示と計測</summary>
+          <label class="check"><input id="grid" type="checkbox" checked /> 奥行きの補助線</label>
+          <label class="check"><input id="preview" type="checkbox" checked /> 顔の追跡の模式図</label>
+          <label class="check"><input id="depth" type="checkbox" /> 前後移動も反映</label>
+          <p class="note">「画面と距離を校正」で距離を合わせられます。校正後は視差の強さ1.0が実寸の基準です。</p>
+          <dl class="readings"><div><dt id="eye-unit">視点（仮想単位）</dt><dd id="eye-reading">0.00 / 0.00 / 5.50</dd></div><div><dt>描画</dt><dd id="fps-reading">—</dd></div><div><dt>顔の推論</dt><dd id="face-reading">停止中</dd></div></dl>
+        </details>
+        <p class="footnote">通常の画面で運動視差を試すデモです。<br />見る人は1人を想定しています。</p>
+      </aside>
+    </main>
+    <dialog id="calibration-dialog" aria-labelledby="calibration-title">
+      <div class="dialog-header"><h2 id="calibration-title">画面と距離の校正</h2><button id="calibration-close" type="button" aria-label="校正を閉じる">×</button></div>
+      <form id="calibration-form">
+        <fieldset>
+          <legend>1. 画面の線を、定規の3cmに合わせる</legend>
+          <div class="ruler-space"><div id="ruler" aria-label="定規で測る基準線"><span>3 cm</span></div></div>
+          <label class="range-label" for="ruler-scale">線の長さ <output id="ruler-value">調整してください</output></label>
+          <input id="ruler-scale" type="range" min="20" max="100" step="0.1" value="37.8" />
+        </fieldset>
+        <fieldset>
+          <legend>2. 画面から目までの距離を測る</legend>
+          <label class="number-label" for="calibration-distance">画面の表面から両目まで <span><input id="calibration-distance" type="number" min="20" max="150" step="1" value="50" required /> cm</span></label>
+          <details class="ipd-details"><summary>目の間隔が分かる場合</summary><label class="number-label" for="calibration-ipd">左右の黒目の中心どうし <span><input id="calibration-ipd" type="number" min="45" max="80" step="0.1" value="63" required /> mm</span></label><p class="note">不明なら仮の63mmで試せます。眼鏡のPD（両眼分）が分かれば入力してください。主に左右・上下移動の縮尺に影響します。</p></details>
+          <p class="calibration-instruction">両目の中間を3D表示部分の中心と同じ高さ・左右位置に合わせ、画面に正対してください。測った距離で静止して基準を取ります。</p>
+          <div class="calibration-video"><canvas id="calibration-preview" width="300" height="225" aria-label="顔の追跡の模式図。実際の映像は表示しません"></canvas></div>
+          <button id="calibration-camera" type="button">カメラを開始</button>
+          <p id="calibration-status" class="status" role="status">カメラを開始して、正面を向いてください。</p>
+        </fieldset>
+        <div class="calibration-actions"><button id="calibration-reset" type="button">校正を解除</button><button id="calibration-capture" class="primary" type="submit" disabled>この距離で基準を取る</button></div>
+        <p class="note">数値だけをこのブラウザに保存します。画面の位置・大きさやカメラを変えたら、基準を取り直してください。カメラが画面付近にある前提の簡易校正です。</p>
+      </form>
+    </dialog>
+    <video id="camera-video" hidden muted playsinline autoplay></video>
+    <p id="fatal" role="alert" hidden></p>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

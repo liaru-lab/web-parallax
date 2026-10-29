@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="630" viewBox="0 0 1000 630" role="img" aria-labelledby="title description">
+  <title id="title">Motion parallax through a fixed screen</title>
+  <desc id="description">Top view. A and B are successive positions of one viewer, not two eyes. Rays to a point behind the display intersect the screen at different positions qA and qB. Rays to a point on the display meet the same screen pixel S.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#69736d" stroke-width="1.4"/></marker></defs>
+  <style>text{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#263c36}.small{font-size:15px;fill:#60716a}.label{font-size:18px}.a{fill:#306d9a}.b{fill:#a36a25}.s{fill:#337457}</style>
+  <rect width="1000" height="630" rx="12" fill="#f5f4ee"/>
+  <text x="40" y="44" font-size="27" font-weight="600">Motion parallax through a fixed screen</text>
+  <text x="40" y="72" class="small">Top view · A and B are positions of the same viewer at different times, not two eyes.</text>
+  <rect x="40" y="92" width="920" height="208" fill="#e6eee8"/>
+  <rect x="40" y="300" width="920" height="238" fill="#eee9de"/>
+  <text x="60" y="151" class="small">Virtual scene</text><text x="60" y="173" class="small">z &lt; 0</text>
+  <text x="60" y="380" class="small">Viewer side</text><text x="60" y="402" class="small">z &gt; 0</text>
+  <line x1="170" y1="300" x2="830" y2="300" stroke="#536c5e" stroke-width="7"/>
+  <text x="174" y="336" class="label">Fixed screen plane · z = 0</text>
+  <path d="M350 490L500 110" fill="none" stroke="#306d9a" stroke-width="3"/>
+  <path d="M650 490L500 110" fill="none" stroke="#a36a25" stroke-width="3"/>
+  <path d="M350 490L760 300M650 490L760 300" fill="none" stroke="#337457" stroke-width="2" stroke-dasharray="7 6" opacity="0.7"/>
+  <circle cx="500" cy="110" r="8" fill="#263c36"/><text x="520" y="117" class="label">P · point behind the screen</text>
+  <circle cx="425" cy="300" r="9" fill="#306d9a" stroke="#f5f4ee" stroke-width="2"/>
+  <circle cx="575" cy="300" r="9" fill="#a36a25" stroke="#f5f4ee" stroke-width="2"/>
+  <text x="400" y="279" class="label a">qA</text><text x="578" y="279" class="label b">qB</text>
+  <rect x="752" y="292" width="16" height="16" rx="2" fill="#337457" stroke="#f5f4ee" stroke-width="2"/>
+  <text x="733" y="256" class="label s">S · point on screen</text>
+  <text x="749" y="278" class="small">same pixel in A and B</text>
+  <circle cx="350" cy="490" r="16" fill="#f5f4ee" stroke="#306d9a" stroke-width="3"/>
+  <circle cx="650" cy="490" r="16" fill="#f5f4ee" stroke="#a36a25" stroke-width="3"/>
+  <text x="343" y="497" font-size="19" class="a">A</text><text x="643" y="497" font-size="19" class="b">B</text>
+  <path d="M382 490H617" fill="none" stroke="#69736d" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+  <text x="500" y="469" class="small" text-anchor="middle">one viewer moves</text>
+  <text x="350" y="526" class="label a" text-anchor="middle">Viewer position A</text>
+  <text x="650" y="526" class="label b" text-anchor="middle">Viewer position B</text>
+  <rect x="40" y="560" width="448" height="48" rx="6" fill="#e6eee8"/>
+  <rect x="512" y="560" width="448" height="48" rx="6" fill="#e6eee8"/>
+  <text x="59" y="590" class="label">Behind screen: qA ≠ qB</text>
+  <text x="531" y="590" class="label">On screen: S stays at the same pixel</text>
+</svg>

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+public/mediapipe/
+public/models/
+.cert/
+.DS_Store
+.local/
+release/
+*.log
+.env*
+!.env.example
