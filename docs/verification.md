@@ -1,6 +1,6 @@
 # Verification / 確認結果
 
-2026-10-29。公開・push・GitHub Pagesの実行はしていません。
+2026-10-29. The source repository and GitHub Pages demo are public. Deployment checks are recorded below.
 
 ## Passed
 
@@ -34,7 +34,15 @@ fold8 (SM-F971B / Android 17 / Chrome 156) was reached through wireless ADB/CDP 
 
 ZIP / FBX / OBJ / VRM-specific behavior, glTF compression decoders, MMD rigid-body collision physics, retargeting arbitrary skeletons and long-session mobile thermal/memory behavior are outside this release. Very large or unusual assets may need export/rig adjustments. MMDLoader emits old material-property warnings with current Three.js; these are distinct from shader errors and the supported rendering/morph/motion paths were checked.
 
-GitHub Pages deployment itself has not been run. The manual-only workflow is preparation, not evidence of an actual GitHub deployment. User-supplied asset rights are outside the bundled-asset audit.
+User-supplied asset rights are outside the bundled-asset audit.
+
+## GitHub Pages deployment
+
+- [Initial deployment](https://github.com/liaru-lab/web-parallax/actions/runs/40876699806) succeeded from commit `6ecc633506ebda1525b1ec4e216d2dc7a95d40ec`, including `npm ci`, all 15 tests, build, asset audit and deployment.
+- All **37 files** at the [HTTPS demo](https://liaru-lab.github.io/web-parallax/) returned successfully and matched the reviewed local production build by SHA-256. This includes application assets, MediaPipe WASM/weights, sample motions, documentation, diagram, bibliography and licenses.
+- Firefox loaded the live site and rendered Deskbot. Entering render-only fullscreen and returning with Escape restored the controls. These are hosting/rendering checks; the earlier local camera checks above do not constitute a new real-camera test against the public origin.
+- GitHub `main` was compared with the 54-file reviewed source export, including the two binary CC0 motion files. Personal assets, `.local/`, `.cert/`, environment files and device connection settings were excluded.
+- Pages uses GitHub Actions with enforced HTTPS. The workflow remains manual-only; a source push does not itself deploy an update.
 
 ## 日本語
 
@@ -42,4 +50,6 @@ GitHub Pages deployment itself has not been run. The manual-only workflow is pre
 
 技術解説は英語を既定とし、同内容の日本語版と相互リンクしました。独自の英語概念図をChromeで目視確認し、リンク先・図の文字切れ・日英のフロー図の一致を検査しています。論文の著者・DOI等を一次資料で確認し、デモ・製品紹介との違いも記載しました。
 
-fold8では新UIの取得まで確認しましたが、Androidの通常ファイルピッカー経由での最終確認はADB接続断のため残っています。実カメラでの距離精度、すべての端末・特殊なモデル、実際のGitHub Pages公開まで保証する検査ではありません。
+GitHub Actionsでテスト15件・ビルド・配布物検査・Pagesへの初回デプロイが成功しました。公開URLの37ファイルが検査済みビルドと一致し、FirefoxでDeskbotの描画と全画面への切り替え・復帰を確認しています。ソース54ファイルも照合し、個人用素材や接続設定は含まれていません。
+
+fold8では新UIの取得まで確認しましたが、Androidの通常ファイルピッカー経由での最終確認はADB接続断のため残っています。実カメラでの距離精度や、すべての端末・特殊なモデルを保証する検査ではありません。今回の公開URLでは、実カメラを使う追加試験は行っていません。

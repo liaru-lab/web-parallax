@@ -1,6 +1,8 @@
-# Release and GitHub Pages preparation
+# Release and GitHub Pages
 
-Nothing has been published, pushed or deployed by this preparation.
+[Live demo](https://liaru-lab.github.io/web-parallax/) · [Public source](https://github.com/liaru-lab/web-parallax)
+
+The initial GitHub Pages deployment succeeded on 2026-10-29 using the manual workflow. See [verification](verification.md) for the deployment and browser checks. `npm run release` creates local archives; it does not publish an update.
 
 ## Prepared artifacts
 
@@ -18,12 +20,12 @@ The app has no application backend. GitHub Pages can host this static build over
 
 Vite uses relative asset paths. Runtime MediaPipe URLs are resolved relative to the document, and sample motions/docs/credits use relative paths too. This supports both a site root and a project path such as `https://USER.github.io/REPOSITORY/`. Do not open `index.html` directly via `file://`; use an HTTP(S) server.
 
-## Later, when publishing is explicitly wanted
+## Publishing an update
 
-1. Review [license-audit.md](license-audit.md), the source/site manifests and the prepared folders. Use the source export for a fresh repository; do not upload the entire personal workspace.
-2. Create the repository and add the prepared source. No repository has been created by this task.
-3. In GitHub repository Settings → Pages, choose **GitHub Actions** as the build source.
-4. The prepared `.github/workflows/pages.yml` has only `workflow_dispatch`. Choose its manual run only when publication is intended. Pushing code does not trigger this Pages workflow.
+1. Review [license-audit.md](license-audit.md), the source/site manifests and the prepared folders. Run `npm run release`. Keep personal assets and environment settings outside the tracked source.
+2. Commit and push the reviewed source changes to `main` in [liaru-lab/web-parallax](https://github.com/liaru-lab/web-parallax). For a fresh repository, use the source export; do not upload the entire personal workspace.
+3. GitHub repository Settings → Pages uses **GitHub Actions** as the build source. GitHub Free requires this repository to be public; the default `github.io` domain enforces HTTPS.
+4. Open [Publish Pages (manual)](https://github.com/liaru-lab/web-parallax/actions/workflows/pages.yml), choose **Run workflow**, and select `main`. The workflow has only `workflow_dispatch`; pushing code does not trigger a deployment.
 5. The workflow installs with `npm ci`, tests, builds, audits, and uploads/deploys `dist/`. Keep all license files, credits and notices in the deployed site.
 
 See [Vite's official Pages instructions](https://vite.dev/guide/static-deploy) and [GitHub's Pages documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site). No GitHub credentials are embedded in the code.
@@ -48,4 +50,6 @@ For Android Chrome, first forward a connected device's `chrome_devtools_remote` 
 
 ## 日本語
 
-公開用ソースと静的サイトをローカルに用意する段階です。リポジトリの作成・push・公開は行っていません。GitHub Pagesは静的サイトとして利用可能ですが、今回用意したワークフローは手動実行専用です。公開したいと決めてから、設定と実行を行います。
+2026-10-29に[公開デモ](https://liaru-lab.github.io/web-parallax/)をGitHub Pagesへデプロイしました。[ソース](https://github.com/liaru-lab/web-parallax)はPublicです。GitHub FreeでのPages利用のため、公開リポジトリを使っています。
+
+更新時は`npm run release`でテスト・ビルド・配布物検査を通し、確認済みソースを`main`へpushしてから、Actionsの「Publish Pages (manual)」を手動実行します。pushだけではサイトは更新されません。ローカルのreleaseコマンドも公開操作は行いません。個人用素材や接続先は引き続き配布対象外です。

@@ -1,5 +1,5 @@
 name: Publish Pages (manual)
-# Prepared only. No push trigger; publishing requires a deliberate manual run.
+# No push trigger; publishing requires a deliberate manual run.
 on:
   workflow_dispatch:
 permissions:

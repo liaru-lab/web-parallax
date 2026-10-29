@@ -2,6 +2,8 @@
 
 顔の位置に合わせた運動視差と、スマホの動きによる揺れものを試す静的Webアプリ。[English](README.md)
 
+[公開デモを開く](https://liaru-lab.github.io/web-parallax/) · [ソースリポジトリ](https://github.com/liaru-lab/web-parallax)
+
 初期表示はコードから作るDeskbotとスタジオ背景です。第三者のキャラクターモデルは同梱しません。手元のGLB／glTF、MMDのPMX／PMDを端末内で読み込み、立ち位置・大きさ・向き・背景画像・照明を変更できます。MMDではVMDと表情、glTFではモデル内のアニメーションと表情を利用できます。UIは日英切り替え対応。
 
 ## 仕組み
@@ -38,6 +40,6 @@ npm run release
 - [校正とプライバシー](docs/calibration.md)
 - [ライセンス確認](docs/license-audit.md)
 - [参考文献](docs/references.md)
-- [公開準備とGitHub Pages](docs/release.md)
+- [GitHub Pagesへの公開・更新](docs/release.md)
 
 プロジェクト自身のコード・手続き生成形状は[MIT](LICENSE)。ライブラリ、顔追跡モデル、DiSKさんのCC0モーションは各ライセンスを保持します。利用者が選ぶモデル・背景・モーションの条件は別です。ローカルで読む方式でも、動画の公開や商用利用等の制限がなくなるわけではありません。
